@@ -2,6 +2,7 @@ package com.swisscom.service.service.impl;
 
 import com.swisscom.service.config.JwtTokenUtil;
 import com.swisscom.service.domain.dto.ApplicationUser;
+import com.swisscom.service.domain.dto.CreateUserRequest;
 import com.swisscom.service.domain.dto.LoginRequest;
 import com.swisscom.service.domain.dto.LoginResponse;
 import com.swisscom.service.domain.entity.User;
@@ -37,11 +38,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void register(LoginRequest loginRequest) {
+    public void register(CreateUserRequest createUserRequest) {
         User user = User.builder()
-                .userRole("ADMIN")
-                .password(passwordEncoder.encode(loginRequest.getPassword()))
-                .username(loginRequest.getUsername())
+                .userRole(createUserRequest.getRole())
+                .password(passwordEncoder.encode(createUserRequest.getPassword()))
+                .username(createUserRequest.getUsername())
                 .build();
         userRepository.save(user);
     }
