@@ -17,9 +17,9 @@ import java.util.List;
 @Service
 public class InterruptionScheduleServiceImpl implements InterruptionScheduleService {
     private static final Logger LOGGER = LoggerFactory.getLogger(InterruptionScheduleServiceImpl.class);
-    private InterruptionScheduleRepository interruptionScheduleRepository;
-    private ModelMapper modelMapper;
-    private SimpMessagingTemplate simpMessagingTemplate;
+    private final InterruptionScheduleRepository interruptionScheduleRepository;
+    private final ModelMapper modelMapper;
+    private final SimpMessagingTemplate simpMessagingTemplate;
 
     public InterruptionScheduleServiceImpl(InterruptionScheduleRepository interruptionScheduleRepository,
                                            ModelMapper modelMapper,
@@ -31,7 +31,7 @@ public class InterruptionScheduleServiceImpl implements InterruptionScheduleServ
 
     /**
      * Save schedule data and send it to the websocket to update clients
-     * @param interruptionScheduleDto
+     * @param interruptionScheduleDto Create Interruption DTO
      */
     @Override
     public void createInterruptionSchedule(InterruptionScheduleDto interruptionScheduleDto,String username) {
@@ -47,8 +47,8 @@ public class InterruptionScheduleServiceImpl implements InterruptionScheduleServ
 
     /**
      *  get interruption schedule using schedule id
-     * @param scheduleId
-     * @return
+     * @param scheduleId schedule id
+     * @return InterruptionScheduleDto
      */
     @Override
     public InterruptionScheduleDto getInterruptionSchedule(Long scheduleId) {
@@ -60,7 +60,7 @@ public class InterruptionScheduleServiceImpl implements InterruptionScheduleServ
 
     /**
      * get all interruption schedules
-     * @return
+     * @return InterruptionScheduleDto
      */
     @Override
     public List<InterruptionScheduleDto> getAllInterruptionSchedules() {
@@ -71,8 +71,8 @@ public class InterruptionScheduleServiceImpl implements InterruptionScheduleServ
 
     /**
      * Update interruption schedule using schedule id and publish to web socket
-     * @param interruptionScheduleDto
-     * @param id
+     * @param interruptionScheduleDto modified request
+     * @param id Schedule id
      */
     @Override
     public void updateInterruptionSchedule(InterruptionScheduleDto interruptionScheduleDto, Long id) {
@@ -90,7 +90,7 @@ public class InterruptionScheduleServiceImpl implements InterruptionScheduleServ
 
     /**
      * Delete interruption schedule by id and publish to web socket
-     * @param scheduleId
+     * @param scheduleId schedule id
      */
     @Override
     public void deleteInterruptionSchedule(Long scheduleId) {

@@ -17,7 +17,7 @@ import java.util.List;
 public class InterruptionScheduleController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(InterruptionScheduleController.class);
-    private InterruptionScheduleService interruptionScheduleService;
+    private final InterruptionScheduleService interruptionScheduleService;
 
     public InterruptionScheduleController(InterruptionScheduleService interruptionScheduleService) {
         this.interruptionScheduleService = interruptionScheduleService;
@@ -61,7 +61,7 @@ public class InterruptionScheduleController {
 
         InterruptionScheduleDto interruptionScheduleDto = interruptionScheduleService.getInterruptionSchedule(id);
 
-        LOGGER.info("Fetch interruption schedule task  request ID  {} | response  ", id, interruptionScheduleDto);
+        LOGGER.info("Fetch interruption schedule task  request ID  {} | response  {}", id, interruptionScheduleDto);
 
         return new ApiResponse.ApiResponseBuilder<>().withHttpStatus(HttpStatus.OK)
                 .withData(interruptionScheduleDto)
