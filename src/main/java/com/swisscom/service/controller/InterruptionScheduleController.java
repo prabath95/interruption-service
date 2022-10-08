@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -24,11 +25,11 @@ public class InterruptionScheduleController {
 
     @PostMapping("/")
     public ResponseEntity<ApiResponse> createInterruptionSchedule(
-            @RequestBody InterruptionScheduleDto interruptionScheduleDto) {
+            @RequestBody InterruptionScheduleDto interruptionScheduleDto, Principal principal) {
 
         LOGGER.info("Create interruption schedule task request {} ", interruptionScheduleDto);
 
-        interruptionScheduleService.createInterruptionSchedule(interruptionScheduleDto);
+        interruptionScheduleService.createInterruptionSchedule(interruptionScheduleDto,principal.getName());
 
         LOGGER.info("Create interruption schedule task created request {} ", interruptionScheduleDto);
 

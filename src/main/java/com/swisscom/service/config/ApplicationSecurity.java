@@ -35,7 +35,7 @@ public class ApplicationSecurity {
                 .and()
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
-                .antMatchers("/auth/*","/topic/**","/gkz-stomp-endpoint/**").permitAll()
+                .antMatchers("/auth/*","/topic/**").permitAll()
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll().anyRequest().authenticated()
                 .and()
                 .exceptionHandling()
@@ -63,7 +63,7 @@ public class ApplicationSecurity {
     CorsConfigurationSource corsConfigurationSource() {
 
         final CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200","http://134.209.113.109"));
         configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         configuration.setAllowCredentials(true);
         configuration.setAllowedHeaders(Arrays.asList("*"));

@@ -5,7 +5,7 @@ import com.swisscom.service.domain.dto.InterruptionScheduleDto;
 import java.util.List;
 
 public interface InterruptionScheduleService {
-    void createInterruptionSchedule(InterruptionScheduleDto interruptionSchedule);
+    void createInterruptionSchedule(InterruptionScheduleDto interruptionSchedule,String username);
 
     void deleteInterruptionSchedule(Long scheduleId);
 

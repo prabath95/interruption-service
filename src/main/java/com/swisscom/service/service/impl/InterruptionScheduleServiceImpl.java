@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -33,12 +34,14 @@ public class InterruptionScheduleServiceImpl implements InterruptionScheduleServ
      * @param interruptionScheduleDto
      */
     @Override
-    public void createInterruptionSchedule(InterruptionScheduleDto interruptionScheduleDto) {
+    public void createInterruptionSchedule(InterruptionScheduleDto interruptionScheduleDto,String username) {
         InterruptionSchedule interruptionSchedule = modelMapper.map(interruptionScheduleDto, InterruptionSchedule.class);
+        interruptionSchedule.setCreatedUser(username);
+        interruptionSchedule.setCreatedDate(LocalDateTime.now());
         InterruptionSchedule createdSchedule = interruptionScheduleRepository.save(interruptionSchedule);
 
         // Submit data to websocket for update subscribed clients
-        LOGGER.info("Send data to websocket {} ", createdSchedule);
+        LOGGER.info("Send data to websocket after creating schedule {} ", createdSchedule);
         simpMessagingTemplate.convertAndSend("/topic/updateSchedule", createdSchedule);
     }
 
@@ -67,7 +70,7 @@ public class InterruptionScheduleServiceImpl implements InterruptionScheduleServ
     }
 
     /**
-     * Update interruption schedule using schedule id
+     * Update interruption schedule using schedule id and publish to web socket
      * @param interruptionScheduleDto
      * @param id
      */
@@ -79,15 +82,23 @@ public class InterruptionScheduleServiceImpl implements InterruptionScheduleServ
                 InterruptionSchedule.class
         );
         interruptionScheduleRepository.save(interruptionSchedule);
+
+        // Submit data to websocket for update subscribed clients
+        LOGGER.info("Send data to websocket after updating schedule {} ", interruptionSchedule);
+        simpMessagingTemplate.convertAndSend("/topic/updateSchedule", interruptionSchedule);
     }
 
     /**
-     * Delete interruption schedule by id
+     * Delete interruption schedule by id and publish to web socket
      * @param scheduleId
      */
     @Override
     public void deleteInterruptionSchedule(Long scheduleId) {
         interruptionScheduleRepository.deleteById(scheduleId);
+
+        // Submit data to websocket for update subscribed clients
+        LOGGER.info("Send data to websocket after deleting schedule id {} ", scheduleId);
+        simpMessagingTemplate.convertAndSend("/topic/updateSchedule", scheduleId);
     }
 
 }

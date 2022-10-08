@@ -22,7 +22,11 @@ public class JwtTokenUtil {
                 .setSubject(user.getUsername())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRE_DURATION))
-                .setClaims(Map.of("userId", user.getUserId(), "userRole", user.getUserRole()))
+                .setClaims(Map.of(
+                        "userId", user.getUserId(),
+                        "username", user.getUsername(),
+                        "userRole", user.getUserRole())
+                )
                 .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
                 .compact();
     }
@@ -43,10 +47,6 @@ public class JwtTokenUtil {
             LOGGER.error("Signature validation failed");
         }
         return false;
-    }
-
-    public String getSubject(String token) {
-        return parseClaims(token).getSubject();
     }
 
     public Claims parseClaims(String token) {

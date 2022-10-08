@@ -64,7 +64,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         UserDetails userDetails = getUserDetails(token);
 
         UsernamePasswordAuthenticationToken
-                authentication = new UsernamePasswordAuthenticationToken(userDetails, null, null);
+                authentication = new UsernamePasswordAuthenticationToken(userDetails.getUsername(), null, null);
 
         authentication.setDetails(
                 new WebAuthenticationDetailsSource().buildDetails(request));
@@ -77,7 +77,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         Claims claims = jwtUtil.parseClaims(token);
         applicationUser.setUserId(((Number) claims.get("userId")).longValue());
         applicationUser.setUserRole((String) claims.get("userRole"));
-        applicationUser.setUsername(jwtUtil.getSubject(token));
+        applicationUser.setUsername((String) claims.get("username"));
         return applicationUser;
     }
 }
